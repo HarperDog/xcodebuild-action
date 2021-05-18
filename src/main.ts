@@ -43,7 +43,7 @@ const SIGNAL_NAME_TO_NUMBER_MAP: Record<Signals, number> = {
     'SIGLOST':          99,
 };
 
-async function runXcodebuild(args: string[], useXcpretty: boolean, arch: string | undefined) {
+async function runXcodebuild(args: string[], useXcpretty: boolean, xcprettyFormatterPath: string, arch: string | undefined) {
     const xcodebuildOut: StdioNull | StdioPipe = useXcpretty ? 'pipe' : process.stdout;
     var xcodebuildCommand = 'xcodebuild';
     var xcodebuildArgs = args;
@@ -65,6 +65,10 @@ async function runXcodebuild(args: string[], useXcpretty: boolean, arch: string 
     if (useXcpretty) {
         var xcprettyCommand = 'xcpretty';
         var xcprettyArgs: string[] = [];
+        if (xcprettyFormatterPath !== undefined) {
+            xcprettyArgs.push('-f');
+            xcprettyArgs.push(xcprettyFormatterPath);
+        }
         if (arch !== undefined) {
             xcprettyArgs = [arch, xcprettyCommand, ...xcprettyArgs];
             xcprettyCommand = 'arch';
@@ -171,6 +175,8 @@ async function main() {
 
     const useXcpretty = core.getInput('use-xcpretty', { required: true }) == 'true';
 
+    const xcprettyFormatterPath = core.getInput('xcpretty-formatter-path', { required: false });
+
     const runWithArch = core.getInput('run-with-arch', { required: false });
 
     const dryRun = core.isDebug() && core.getInput('dry-run') == 'true';
@@ -188,7 +194,7 @@ async function main() {
             process.chdir(spmPackage);
         }
         try {
-            await runXcodebuild(xcodebuildArgs, useXcpretty, runWithArch);
+            await runXcodebuild(xcodebuildArgs, useXcpretty, xcprettyFormatterPath, runWithArch);
         } finally {
             if (spmPackage) {
                 process.chdir(cwd);

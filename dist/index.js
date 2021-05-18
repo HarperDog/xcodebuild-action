@@ -68,7 +68,7 @@ const SIGNAL_NAME_TO_NUMBER_MAP = {
     'SIGINFO': 98,
     'SIGLOST': 99,
 };
-async function runXcodebuild(args, useXcpretty, arch) {
+async function runXcodebuild(args, useXcpretty, xcprettyFormatterPath, arch) {
     var _a;
     const xcodebuildOut = useXcpretty ? 'pipe' : process.stdout;
     var xcodebuildCommand = 'xcodebuild';
@@ -92,6 +92,10 @@ async function runXcodebuild(args, useXcpretty, arch) {
     if (useXcpretty) {
         var xcprettyCommand = 'xcpretty';
         var xcprettyArgs = [];
+        if (xcprettyFormatterPath !== undefined) {
+            xcprettyArgs.push('-f');
+            xcprettyArgs.push(xcprettyFormatterPath);
+        }
         if (arch !== undefined) {
             xcprettyArgs = [arch, xcprettyCommand, ...xcprettyArgs];
             xcprettyCommand = 'arch';
@@ -192,6 +196,7 @@ async function main() {
     const action = core.getInput('action', { required: true });
     xcodebuildArgs.push(...action.split(' '));
     const useXcpretty = core.getInput('use-xcpretty', { required: true }) == 'true';
+    const xcprettyFormatterPath = core.getInput('xcpretty-formatter-path', { required: false });
     const runWithArch = core.getInput('run-with-arch', { required: false });
     const dryRun = core.isDebug() && core.getInput('dry-run') == 'true';
     // We allow other platforms for dry-runs since this speeds up tests (more parallel builds).
@@ -206,7 +211,7 @@ async function main() {
             process.chdir(spmPackage);
         }
         try {
-            await runXcodebuild(xcodebuildArgs, useXcpretty, runWithArch);
+            await runXcodebuild(xcodebuildArgs, useXcpretty, xcprettyFormatterPath, runWithArch);
         }
         finally {
             if (spmPackage) {
