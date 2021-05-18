@@ -90,7 +90,13 @@ async function runXcodebuild(args, useXcpretty, arch) {
         });
     });
     if (useXcpretty) {
-        const xcpretty = child_process_1.spawn('xcpretty', { stdio: ['pipe', process.stdout, process.stderr] });
+        var xcprettyCommand = 'xcpretty';
+        var xcprettyArgs = [];
+        if (arch !== undefined) {
+            xcprettyArgs = [arch, xcprettyCommand, ...xcprettyArgs];
+            xcprettyCommand = 'arch';
+        }
+        const xcpretty = child_process_1.spawn(xcprettyCommand, xcprettyArgs, { stdio: ['pipe', process.stdout, process.stderr] });
         (_a = xcodebuild.stdout) === null || _a === void 0 ? void 0 : _a.pipe(xcpretty.stdin);
         finishedPromise = finishedPromise.then((xcodeCode) => new Promise((resolve, reject) => {
             xcpretty.on('error', reject);
