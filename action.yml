@@ -1,6 +1,6 @@
 name: Xcodebuild Action
 description: Runs xcodebuild e.g. to run tests.
-author: ser.soft GmbH
+author: Harper Pack
 inputs:
   workspace:
     description: The path to the xcworkspace to build. Mutually exclusive with `project` and `spm-package`. See also `xcodebuild`'s `-workspace`.
@@ -102,6 +102,9 @@ inputs:
     default: true
   dry-run:
     description: '<TEST ONLY> Whether the commands should only be printed but not actually run. Only used in test.'
+    required: false
+  run-with-arch:
+    description: Arguments to pass to the `arch` command when running xcodebuild (and xcpretty if enabled). If not specified, `arch` is not included in the commands.
     required: false
 runs:
   using: node12

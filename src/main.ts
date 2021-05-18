@@ -43,9 +43,15 @@ const SIGNAL_NAME_TO_NUMBER_MAP: Record<Signals, number> = {
     'SIGLOST':          99,
 };
 
-async function runXcodebuild(args: string[], useXcpretty: boolean) {
+async function runXcodebuild(args: string[], useXcpretty: boolean, arch: string | undefined) {
     const xcodebuildOut: StdioNull | StdioPipe = useXcpretty ? 'pipe' : process.stdout;
-    const xcodebuild = spawn('xcodebuild', args, { stdio: ['inherit', xcodebuildOut, process.stderr] });
+    var xcodebuildCommand = 'xcodebuild';
+    var xcodebuildArgs = args;
+    if (arch !== undefined) {
+        xcodebuildArgs = [arch, xcodebuildCommand, ...xcodebuildArgs];
+        xcodebuildCommand = 'arch';
+    }
+    const xcodebuild = spawn(xcodebuildCommand, xcodebuildArgs, { stdio: ['inherit', xcodebuildOut, process.stderr] });
     let finishedPromise = new Promise<number>((resolve, reject) => {
         xcodebuild.on('error', reject);
         xcodebuild.on('exit', (exitCode, signal) => {
@@ -159,6 +165,8 @@ async function main() {
 
     const useXcpretty = core.getInput('use-xcpretty', { required: true }) == 'true';
 
+    const runWithArch = core.getInput('run-with-arch', { required: false });
+
     const dryRun = core.isDebug() && core.getInput('dry-run') == 'true';
 
     // We allow other platforms for dry-runs since this speeds up tests (more parallel builds).
@@ -174,7 +182,7 @@ async function main() {
             process.chdir(spmPackage);
         }
         try {
-            await runXcodebuild(xcodebuildArgs, useXcpretty);
+            await runXcodebuild(xcodebuildArgs, useXcpretty, runWithArch);
         } finally {
             if (spmPackage) {
                 process.chdir(cwd);
