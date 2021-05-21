@@ -139,6 +139,13 @@ async function main() {
         }
     }
 
+    // The input is boolean, and if the value is true, a build setting will be appended.
+    function addBuildSettingFlagArg(inputName: string, argVal: string) {
+        if (core.getInput(inputName) == 'true') {
+            xcodebuildArgs.push(argVal);
+        }
+    }
+
     addInputArg('target');
     addInputArg('destination');
     addInputArg('configuration');
@@ -165,6 +172,7 @@ async function main() {
     addFlagArg('allow-provisioning-updates', 'allowProvisioningUpdates');
     addFlagArg('allow-provisioning-device-registration', 'allowProvisioningDeviceRegistration');
     addFlagArg('disable-automatic-package-resolution', 'disableAutomaticPackageResolution');
+    addBuildSettingFlagArg('disable-index-while-building', 'COMPILER_INDEX_STORE_ENABLE=NO');
 
     const buildSettings = core.getInput('build-settings');
     if (buildSettings) {
