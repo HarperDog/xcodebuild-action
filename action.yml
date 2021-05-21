@@ -109,6 +109,10 @@ inputs:
   run-with-arch:
     description: Arguments to pass to the `arch` command when running xcodebuild (and xcpretty if enabled). If not specified, `arch` is not included in the commands.
     required: false
+  disable-automatic-package-resolution:
+    description: Prevent packages from automatically being resolved to versions other than those recorded in the `Package.resolved` file
+    required: true
+    default: true
 runs:
   using: node12
   main: dist/index.js
