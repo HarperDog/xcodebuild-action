@@ -164,6 +164,7 @@ async function main() {
     addFlagArg('skip-unavailable-actions', 'skipUnavailableActions');
     addFlagArg('allow-provisioning-updates', 'allowProvisioningUpdates');
     addFlagArg('allow-provisioning-device-registration', 'allowProvisioningDeviceRegistration');
+    addFlagArg('disable-automatic-package-resolution', 'disableAutomaticPackageResolution');
 
     const buildSettings = core.getInput('build-settings');
     if (buildSettings) {
