@@ -164,6 +164,7 @@ async function main() {
     addInputArg('result-bundle-path', 'resultBundlePath');
     addInputArg('result-bundle-version', 'resultBundleVersion');
     addInputArg('derived-data-path', 'derivedDataPath');
+    addInputArg('cloned-source-packages-dir-path', 'clonedSourcePackagesDirPath');
     addInputArg('xcroot');
     addInputArg('xctestrun');
     addInputArg('test-plan', 'testPlan');

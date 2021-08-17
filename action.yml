@@ -103,6 +103,9 @@ inputs:
   xcpretty-formatter-path:
     description: Path to a ruby script that returns a formatter object to be used by xcpretty.
     required: false
+  cloned-source-packages-dir-path:
+    description: Path to store cloned Swift packages. Defaults to somewhere in DerivedData.
+    required: false
   dry-run:
     description: '<TEST ONLY> Whether the commands should only be printed but not actually run. Only used in test.'
     required: false
