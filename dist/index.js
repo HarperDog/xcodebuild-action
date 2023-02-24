@@ -164,6 +164,12 @@ async function main() {
             xcodebuildArgs.push(`-${argName !== null && argName !== void 0 ? argName : inputName}`);
         }
     }
+    // The input is boolean, and if the value is true, a build setting will be appended.
+    function addBuildSettingFlagArg(inputName, argVal) {
+        if (core.getInput(inputName) == 'true') {
+            xcodebuildArgs.push(argVal);
+        }
+    }
     addInputArg('target');
     addInputArg('destination');
     addInputArg('configuration');
@@ -182,6 +188,7 @@ async function main() {
     addInputArg('result-bundle-path', 'resultBundlePath');
     addInputArg('result-bundle-version', 'resultBundleVersion');
     addInputArg('derived-data-path', 'derivedDataPath');
+    addInputArg('cloned-source-packages-dir-path', 'clonedSourcePackagesDirPath');
     addInputArg('xcroot');
     addInputArg('xctestrun');
     addInputArg('test-plan', 'testPlan');
@@ -189,6 +196,8 @@ async function main() {
     addFlagArg('skip-unavailable-actions', 'skipUnavailableActions');
     addFlagArg('allow-provisioning-updates', 'allowProvisioningUpdates');
     addFlagArg('allow-provisioning-device-registration', 'allowProvisioningDeviceRegistration');
+    addFlagArg('disable-automatic-package-resolution', 'disableAutomaticPackageResolution');
+    addBuildSettingFlagArg('disable-index-while-building', 'COMPILER_INDEX_STORE_ENABLE=NO');
     const buildSettings = core.getInput('build-settings');
     if (buildSettings) {
         xcodebuildArgs.push(...buildSettings.split(' '));
@@ -197,7 +206,8 @@ async function main() {
     xcodebuildArgs.push(...action.split(' '));
     const useXcpretty = core.getInput('use-xcpretty', { required: true }) == 'true';
     const xcprettyFormatterPath = core.getInput('xcpretty-formatter-path', { required: false });
-    const runWithArch = core.getInput('run-with-arch', { required: false });
+    const runWithArchInput = core.getInput('run-with-arch', { required: false });
+    const runWithArch = runWithArchInput === "" ? undefined : runWithArchInput;
     const dryRun = core.isDebug() && core.getInput('dry-run') == 'true';
     // We allow other platforms for dry-runs since this speeds up tests (more parallel builds).
     if (!dryRun && process.platform != "darwin") {
