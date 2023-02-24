@@ -187,7 +187,8 @@ async function main() {
 
     const xcprettyFormatterPath = core.getInput('xcpretty-formatter-path', { required: false });
 
-    const runWithArch = core.getInput('run-with-arch', { required: false });
+    const runWithArchInput = core.getInput('run-with-arch', { required: false });
+    const runWithArch = runWithArchInput === "" ? undefined : runWithArchInput;
 
     const dryRun = core.isDebug() && core.getInput('dry-run') == 'true';
 
