@@ -120,7 +120,7 @@ inputs:
     description: Disable indexing during build to speed it up. In CI, we don't need autocomplete or the other features that indexing provides.
     required: false
 runs:
-  using: node12
+  using: node16
   main: dist/index.js
 branding:
   color: blue
