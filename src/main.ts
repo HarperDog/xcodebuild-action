@@ -173,6 +173,7 @@ async function main() {
     addFlagArg('allow-provisioning-updates', 'allowProvisioningUpdates');
     addFlagArg('allow-provisioning-device-registration', 'allowProvisioningDeviceRegistration');
     addFlagArg('disable-automatic-package-resolution', 'disableAutomaticPackageResolution');
+    addFlagArg('skip-package-updates', 'skipPackageUpdates');
     addBuildSettingFlagArg('disable-index-while-building', 'COMPILER_INDEX_STORE_ENABLE=NO');
 
     const buildSettings = core.getInput('build-settings');

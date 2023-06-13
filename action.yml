@@ -116,6 +116,10 @@ inputs:
     description: Prevent packages from automatically being resolved to versions other than those recorded in the `Package.resolved` file
     required: true
     default: true
+  skip-package-updates:
+    description: Prevent package updates completely
+    required: true
+    default: false
   disable-index-while-building:
     description: Disable indexing during build to speed it up. In CI, we don't need autocomplete or the other features that indexing provides.
     required: false
