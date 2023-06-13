@@ -1,6 +1,6 @@
 {
   "name": "xcodebuild-action",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "A GitHub action that runs xcodebuild.",
   "main": "dist/index.js",
   "scripts": {
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sersoft-gmbh/xcodebuild-action.git"
+    "url": "git+https://github.com/HarperDog/xcodebuild-action.git"
   },
   "keywords": [
     "Xcode",
@@ -19,9 +19,9 @@
   "author": "ser.soft GmbH",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/sersoft-gmbh/xcodebuild-action/issues"
+    "url": "https://github.com/HarperDog/xcodebuild-action/issues"
   },
-  "homepage": "https://github.com/sersoft-gmbh/xcodebuild-action#readme",
+  "homepage": "https://github.com/HarperDog/xcodebuild-action#readme",
   "dependencies": {
     "@actions/core": "^1.2.7"
   },
